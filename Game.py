@@ -2,31 +2,27 @@ from Questions import Questions
 from Player import Player
 
 class Game(object):
-    def __init__(self, numPlayers, scoreLimit):
+    def __init__(self, scoreLimit):
         """
         Makes the players for the game and gets the list of questions
-        :param numPlayers: The number of players for the game session 
         :param scoreLimit: The score limit to reach
         """
-        self.numPlayers = numPlayers
+        self.numPlayers = 0
         self.questions = Questions()
         self.questions.loadQuestionsFromFiles('ListOfQuestions.txt')
         self.scoreLimit = scoreLimit
         self.unassignedAnswers = []
         self.players = {}
         self.names = []
-        
-    def createPlayers(self):
+
+    def addPlayer(self, name):
         """
-        Creates the players for the game
+        Add a player to the game
+        :param name: Name of the player to add. 
         """
-        i = 0
-        while i < self.numPlayers:
-            name = raw_input('Enter name for player ' + str(i+1) +': ')
-            self.players[name] = Player(name)
-            i += 1
+        self.players[name] = Player(name)
         self.names = self.players.keys()
-        
+        self.numPlayers += 1
     
     def displayQuestion(self):
         """
@@ -34,27 +30,29 @@ class Game(object):
         """
         return self.questions.selectQuestion()
     
-    def getPlayerAnswers(self):
+    def getPlayerAnswers(self, name, answer):
         """
-        Collects the answers for a question
+        Collects the answers for a question for a player
+        :param name: Name of the player
+        :param answer: Answer to the question
         """
-        for k,v in self.players.iteritems():
-            answer = raw_input('What is your answer, ' + k + '? ')
-            self.unassignedAnswers.append(answer)
-            v.updateAnswer(answer)
+        self.unassignedAnswers.append(answer)
+        self.players[name].updateAnswer(answer)
             
     def checkGuess(self, guesser, guessee, guess):
         """
         Checks if this player's guess is right and increases the guesser's score if it is
-        :param guesser: The player that is guessing
-        :param guessee: The player that is being guessed
+        :param guesser: The name of the player that is guessing
+        :param guessee: The name of the player that is being guessed
         :param guess: The answer that the guesser is trying to associate with the guessee
         :return: True if guess is correct
         """
-        if guessee.checkGuess(guess):
-            guesser.increaseScore()
+        guessee_object = self.players[guessee]
+        guesser_object = self.players[guesser]
+        if guessee_object.checkGuess(guess):
+            guesser_object.increaseScore()
             self.unassignedAnswers.remove(guess)
-            self.names.remove(guessee.getName())
+            self.names.remove(guessee_object.getName())
             return True
         return False
     
@@ -71,7 +69,14 @@ class Game(object):
                 print('Player ' + k + ' has won!')
                 return True
         return False
-    
+
+    def getPlayerScore(self, name):
+        """
+        Returns the score of the player.
+        :param name: Name of the player
+        """
+        return self.players[name].getScore()
+    '''
     def runGuesses(self):
         """
         Runs a loop of guesses among the players
@@ -86,10 +91,14 @@ class Game(object):
             print("Player " + k + "'s turn")
             print("Available answers:")
             for option in self.unassignedAnswers:
+                if v.checkGuess(option):
+                    continue
                 print(str(answerIndex + 1) + '. ' + option)
                 answerIndex += 1
             print("\nAvailable players:")
             for name in self.names:
+                if k == name:
+                    continue
                 print(str(nameIndex + 1) + '. ' + name)
                 nameIndex += 1
             answerNum = int(raw_input("Choose the Answer ")) - 1
@@ -98,5 +107,6 @@ class Game(object):
                 print("Correct guess!")
             else:
                 print("Wrong guess.")
-        return len(self.unassignedAnswers) == 0
+        return len(self.unassignedAnswers) == 1
+    '''
         

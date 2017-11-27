@@ -44,7 +44,8 @@ class Questions(object):
         Selects a random question to be displayed
         :return: The question that was selected
         """
-        question = random.choice(self.questionsToDisplay)
+        questionIndex = random.randint(0, len(self.questionsToDisplay) - 1)
+        question = self.questionsToDisplay[questionIndex]
         self.questionsToDisplay.remove(question)
         return question
     
