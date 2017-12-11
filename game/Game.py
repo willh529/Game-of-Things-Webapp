@@ -23,6 +23,13 @@ class Game(object):
         self.players[name] = Player(name)
         self.names = self.players.keys()
         self.numPlayers += 1
+
+    def addQuestion(self, question):
+        """
+        Add a question to the database
+        :param question: Question to add.
+        """
+        self.questions.addQuestion(question, 'ListOfQuestions.txt')
     
     def displayQuestion(self):
         """
@@ -55,6 +62,12 @@ class Game(object):
             self.names.remove(guessee_object.getName())
             return True
         return False
+
+    def resetNameArray(self):
+        self.names = self.players.keys()
+
+    def clearAnswers(self):
+        self.unassignedAnswers = []
     
     def isGameOver(self):
         """
@@ -76,37 +89,3 @@ class Game(object):
         :param name: Name of the player
         """
         return self.players[name].getScore()
-    '''
-    def runGuesses(self):
-        """
-        Runs a loop of guesses among the players
-        :return: True if all answers assigned
-        """        
-        for k,v in self.players.iteritems():
-            if not(k in self.names):
-                print("Player " + k + " has been guessed already")
-                continue
-            answerIndex = 0
-            nameIndex = 0
-            print("Player " + k + "'s turn")
-            print("Available answers:")
-            for option in self.unassignedAnswers:
-                if v.checkGuess(option):
-                    continue
-                print(str(answerIndex + 1) + '. ' + option)
-                answerIndex += 1
-            print("\nAvailable players:")
-            for name in self.names:
-                if k == name:
-                    continue
-                print(str(nameIndex + 1) + '. ' + name)
-                nameIndex += 1
-            answerNum = int(raw_input("Choose the Answer ")) - 1
-            nameNum = int(raw_input("Choose the Player ")) - 1
-            if self.checkGuess(v, self.players[self.names[nameNum]], self.unassignedAnswers[answerNum]):
-                print("Correct guess!")
-            else:
-                print("Wrong guess.")
-        return len(self.unassignedAnswers) == 1
-    '''
-        

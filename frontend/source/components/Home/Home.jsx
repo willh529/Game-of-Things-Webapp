@@ -30,6 +30,7 @@ class Home extends Component {
                 <h1>{this.state.title}</h1>
                 <h4>{this.state.startup}</h4>
                 <Link to="/start"><Button content="Setup game"/></Link>
+                <Link to="/add"><Button content="Add a question"/></Link>
             </div>
         )
     }

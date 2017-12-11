@@ -9,6 +9,7 @@ import Setup from './components/Setup/Setup.jsx';
 import Question from './components/Question/Question.jsx';
 import Game from './components/Game/Game.jsx';
 import Score from './components/Score/Score.jsx';
+import Add from './components/Add/Add.jsx';
 
 // Include any new stylesheets here
 // Note that components' stylesheets should NOT be included here.
@@ -23,6 +24,7 @@ render(
             <Route exact path="/question" component={Question}/>
             <Route exact path="/game" component={Game}/>
             <Route exact path="/score" component={Score}/>
+            <Route exact path="/add" component={Add}/>
         </div>
     </Router>),
     // Define your router and replace <Home /> with it!

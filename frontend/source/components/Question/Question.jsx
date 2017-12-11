@@ -12,7 +12,7 @@ class Question extends Component {
     constructor(props) {
         super(props);
         this.state = { question: "",  players: [], answer: "", playerIndex: 0};
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -24,7 +24,6 @@ class Question extends Component {
     handleSubmit(e) {
         var self = this;
         e.preventDefault();
-        document.getElementById("answer").reset();
         axios.post("http://localhost:5000/question", {
             player: self.state.players[self.state.playerIndex],
             answer: self.state.answer
@@ -34,6 +33,8 @@ class Question extends Component {
                 if(self.state.playerIndex == self.state.players.length) {
                     self.props.history.push("/game");
                 }
+                document.getElementById("answer").reset();
+                self.forceUpdate();
             })
             .catch(function (error) {
                 console.log(error)
@@ -61,6 +62,7 @@ class Question extends Component {
                         <Input placeholder="Answer" name="answer" onChange={this.handleChange}/>
                     </Form.Field>
                     <Button type="submit" content="Submit" />
+                    <Link to="/score"><Button content="End game"/></Link>
                 </Form>
             </div>
         )
